@@ -93,3 +93,15 @@ def get_conference_paper():
                 temp.append(paper.text)
         output[part_name[ind]] = temp
         return output
+
+# 获取acl会议文章
+# 返回值为list: [paper1,paper2,...]
+def get_acl_paper():
+    url = "https://aclanthology.org/events/acl-2020/"
+    req = requests.get(url).text
+    soup =BeautifulSoup(req,"lxml")
+    res = soup.find_all("strong")[1:]
+    output = []
+    for item in res:
+        output.append(item.text)
+    return output 
