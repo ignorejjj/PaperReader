@@ -48,3 +48,48 @@ def search_paper(keyword):
         journal_name = item['venue']['raw']
         search_data.append({"title":title, "pdf_url":pdf_url, "author":author, "paper_url":paper_url, "abstract":abstract, "journal_name":journal_name})
     return search_data
+
+# 获取会议论文
+# 会议包括: ICCV,CVPR,SIGIR,NIPS,ICML,AAAI,IJCAI,MM,KDD,CIKMD等
+# 返回值为dict,包含所查询会议的所有论文的名称以及种类(Long) 
+# {"part1":[paper1,paper2,...],"part2":[paper3,paper4]}
+def get_conference_paper():
+    # iclr,cvpr,cikm,icml,kdd,mm,cikm,sigir
+    # aaai,iccv 需要修改一下part_name(后续进行添加)
+    # acl 需要对另一个api进行爬取
+    url = 'https://dblp.org/db/conf/aaai/aaai2021.html'
+    req = requests.get(url).text
+    soup =BeautifulSoup(req,"lxml")
+    # 首先获取会议各个部分的名称
+    part_name = []
+    for item in soup.find("div",{"id":"main"}).find_all("header"):
+        part = item.find("h2")
+        if part:
+            part_name.append(part.text)
+
+    # 针对icml,neurips等没有子模块的会议进行处理
+    if part_name == []:
+        output = {}
+        temp = []
+        result = soup.find("ul",{"class":"publ-list"}).find_all("li")[1:]
+        for item in result:
+            paper = item.find("span",{"class":"title"})
+            if paper:
+                temp.append(paper.text)
+        output['no-name'] = temp
+        return output
+    
+    # 第一个项为会议名称,删去
+    part_name = part_name[1:]
+    # 获取每个部分下的论文名称
+    result = soup.find_all("ul",{"class":"publ-list"})[1:]
+    output = {}
+    for ind,item in enumerate(result):
+        temp = []
+        res = item.find_all("li")
+        for i in res:
+            paper = i.find("span",{"class":"title"})
+            if paper:
+                temp.append(paper.text)
+        output[part_name[ind]] = temp
+        return output
