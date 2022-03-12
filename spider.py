@@ -105,3 +105,22 @@ def get_acl_paper():
     for item in res:
         output.append(item.text)
     return output 
+
+# 热门主题爬取
+# 返回值为list:[hottopic1,hottopic2,...] 
+def get_hottopic():
+    headers = {'User-Agent': 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 Edg/99.0.1150.30',
+                'Content-Type': 'application/json;charset=UTF-8;application/json;charset=UTF-8;',
+                'Sec-Fetch-Site': 'same-site',
+                'Host': 'searchtest.aminer.cn',
+                'Origin': 'https://www.aminer.cn',
+                'Referer': 'https://www.aminer.cn/',
+                'Connection': 'keep-alive'}
+    url = 'https://apiv2.aminer.cn/magic?a=__domains.GetTopicOfDomain___'
+    post_data = [{"action":"domains.GetTopicOfDomain","parameters":{"topicSize":20,"topSize":50,"sids":[143]}}]
+    req = json.loads(requests.post(url,headers=headers,data=json.dumps(post_data)).text)
+    result = req['data'][0]['data']['hotTopics']
+    hottopics = []
+    for item in result:
+        hottopics.append(item['name'])
+    return hottopics
