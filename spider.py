@@ -124,3 +124,75 @@ def get_hottopic():
     for item in result:
         hottopics.append(item['name'])
     return hottopics
+
+
+""" 
+从形如T. Hofmann. Probabilistic latent semantic indexing. 
+Proceedings of the Twenty-Second Annual International SIGIR Conference, 1999.
+长文本中获取参考文献的名称，便于后面进行查询
+"""
+
+def simplify_name(name):
+    s = name.split(".")[2:]
+    for line in s:
+        s2 = line.split(" ")[1:]
+        if "," in line:
+            continue 
+        elif len(s2)<=2:
+            continue
+        elif min([len(w) for w in s2])<2 and len(s2)<4:
+            continue
+        else:
+            return line
+
+
+# 获取某个文献的bib文件
+def get_bib(name,filepath):
+    # 由于name中包含了作者，出版刊物等无用信息，需要进行简化再搜索
+    paper_name = simplify_name(name)
+    # 说明该文献为网址等形式，无法搜索，进行跳过
+    if paper_name is None:
+        print("NotFound:",name)
+        return None
+    output = search_paper(paper_name)
+    # 搜索内容为空
+    # ---后续需要对这部分进行改进(添加搜索源)---
+    if output == []:
+        print("NotFound:",name)
+        return None
+    paper_id = output[0]['paper_url'].split("/")[-1]   
+    url = "https://apiv2.aminer.cn/magic?a=getTopicCited__topic.GetTopicCited___"
+    post_data = [{"action":"topic.GetTopicCited","parameters":{"ids":[paper_id]}}]
+    req = json.loads(requests.post(url,data=json.dumps(post_data)).text)
+    ref = req['data'][0]['data']['bib']
+    with open(filepath + "\\" + "{}.bib".format(paper_name),"w",encoding='utf-8') as f:
+        try:
+            f.write(ref)
+        except:
+            print(ref)
+    return paper_name
+
+
+# 搜索给定文献的所有参考文献,并保存为bib文件
+# output: [ref_name1,ref_name2,..]
+def get_ref(paper_name):
+    # 获取给定文献的url
+    output = search_paper(paper_name)
+    paper_url = output[0]['paper_url']
+    
+    # 访问paper_url,获取该文献的参考文献名称
+    req = requests.get(paper_url)
+    soup =BeautifulSoup(req.text,'lxml')
+    result = soup.find_all("li",{"class":"refItem"})
+    ref_names = [item.text for item in result]
+    
+    # 对每个参考文献,获取该文献的bib内容并存为bib文件 
+    filepath = ".\Reference{}".format(paper_name)
+    if not os.path.exists(filepath):
+        os.makedirs(filepath)
+    output = []
+    for i,name in enumerate(ref_names):
+        outname = get_bib(name,filepath)
+        if outname is not None:
+            output.append(outname)
+    return output 
