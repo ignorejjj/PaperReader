@@ -4,7 +4,7 @@ class SpiderConfig(object):
     # 一般情况下的hearders
     normal_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 Edg/99.0.1150.30'}
     # 用于搜索的headers,需要带Host等参数
-    search_headers = {'User-Agent': 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 Edg/99.0.1150.30',
+    search_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 Edg/99.0.1150.30',
                       'Content-Type': 'application/json;charset=UTF-8;application/json;charset=UTF-8;',
                       'Sec-Fetch-Site': 'same-site',
                       'Host': 'searchtest.aminer.cn',
