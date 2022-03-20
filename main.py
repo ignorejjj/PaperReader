@@ -13,10 +13,18 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         super(MyWindow, self).__init__()
         self.setupUi(self)
 
+        """"初始化各个标签"""
+        for i in range(4):
+            self.__dict__['title{}'.format(i+1)].setText("")
+            self.__dict__['author{}'.format(i+1)].setText("")
+            self.__dict__['conf{}'.format(i+1)].setText("")
+        self.currentPage = 0
+        self.pagedata = None
+
         """跳转菜单"""
         self.pushButton_6.clicked.connect(self.to_page1)
-        self.pushButton_4.clicked.connect(self.to_page2)
-        self.pushButton_5.clicked.connect(self.to_page3)
+        self.pushButton_5.clicked.connect(self.to_page2)
+        self.pushButton_4.clicked.connect(self.to_page3)
 
         """文献检索下载功能对应函数"""
         self.pushButton.clicked.connect(self.search_paper)
@@ -28,6 +36,9 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_2.clicked.connect(self.to_nextpage)
         self.pushButton_3.clicked.connect(self.to_lastpage)
 
+        """参考文献检索功能对应函数"""
+        # 绑定参考文献检索函数
+        self.pushButton_7.clicked.connect(self.search_bib)
 
 
     def to_page1(self):
@@ -66,7 +77,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             self.__dict__['conf{}'.format(i+1)].setText(item['journal_name'])
      
     
-    # 点击下载按钮后跳转到对应链接
+    # 点击下载按钮后跳转到对应链接(文献检索页面)
     # n为点击的按钮序号
     def to_downurl(self, n):
         data = self.pagedata[self.currentPage][n-1]
@@ -80,7 +91,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         driver = webdriver.Chrome()
         driver.get(url)
     
-    # 点击文章链接按钮后跳转到对应链接
+    # 点击文章链接按钮后跳转到对应链接(文献检索页面)
     def to_paperurl(self, n):
         data = self.pagedata[self.currentPage][n-1]
         url = data['paper_url']
@@ -92,7 +103,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         driver = webdriver.Chrome()
         driver.get(url)
 
-    # 在搜索页面跳转到下一页
+    # 在搜索页面跳转到下一页(文献检索页面)
     def to_nextpage(self):
         page_num = len(self.pagedata)
         # 已经是最后一页
@@ -103,7 +114,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.currentPage += 1
         self.set_searchpage(data = self.pagedata[self.currentPage])
 
-    # 在搜索页面跳转到上一页
+    # 在搜索页面跳转到上一页(文献检索页面)
     def to_lastpage(self):    
         # 已经是最后一页
         if self.currentPage < 1:
@@ -112,6 +123,19 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             # 加入弹窗
         self.currentPage -= 1
         self.set_searchpage(data = self.pagedata[self.currentPage])
+
+    
+    # 参考文献检索并下载bib
+    def search_bib(self):
+        search_name = self.lineEdit_2.text()
+        ref_names = self.spider.get_ref(search_name)
+        # 设置展示表格
+        self.tableWidget.setRowCount(len(ref_names))
+        for i,name in enumerate(ref_names):
+            new = QTableWidgetItem(name)
+            self.tableWidget.setItem(i,0,new)
+
+        
 
 
 

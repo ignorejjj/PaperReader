@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
+import re
 from config import SpiderConfig
 from utils import *
 
@@ -35,9 +36,10 @@ class Spider():
             author = [j['name'] for j in item['authors']]
             # 论文主页链接
             paper_url = SpiderConfig.paper_url.format(item['id'])
+            paper_id = item['id']
             abstract = item['pubAbstract']
             journal_name = item['venue']['raw']
-            search_data.append({"title":title, "pdf_url":pdf_url, "author":author, "paper_url":paper_url, "abstract":abstract, "journal_name":journal_name})
+            search_data.append({"title":title, "pdf_url":pdf_url, "author":author, "paper_url":paper_url, "abstract":abstract, "journal_name":journal_name, "paper_id":paper_id})
         return search_data
     
     # 获取热门会议论文资讯
@@ -135,48 +137,47 @@ class Spider():
     # 搜索给定文献的所有参考文献,并保存为bib文件
     # 返回值: [ref_name1,ref_name2,..]
     def get_ref(self, paper_name):
+
         # 获取给定文献的主页url
         res = self.search_paper(paper_name)
-        paper_url = res[0]['paper_url']
-
+        paper_id = res[0]['paper_id']
+        name = res[0]['title']
+        print(paper_id)
         # 访问paper_url,获取该文献的所有参考文献
-        req = requests.get(paper_url, headers = SpiderConfig.normal_headers)
-        soup =BeautifulSoup(req.text, 'lxml')
-        result = soup.find_all("li",{"class":"refItem"})
-        res = [item.text for item in result]
-        filepath = ".\Reference{}".format(paper_name)
+        req = requests.get(SpiderConfig.ref_url.format(paper_id), headers = SpiderConfig.normal_headers)
+        data = json.loads(req.text)
+        ref_infor = [(item['id'],item['title']) for item in data['data']]
+
+        filepath = ".\Reference--{}".format(name)
         if not os.path.exists(filepath):
             os.makedirs(filepath)
-        ref_names = []
+
         # 对每个参考文献,保存该文献的bib
-        for i,ref_name in enumerate(resetscreen):
-            outname = self.get_bib(ref_name, filepath)
-            if outname != "NotFound" or outname!= "None":
-                ref_names.append(outname)
+        for (ref_id, ref_name) in ref_infor:
+            print(ref_name)
+            self.get_bib(ref_name,ref_id, filepath)
+        
+        # 返回所有参考文献名称
+        ref_names = [item[1] for item in ref_infor]
         return ref_names 
     
 
     # 获取某个文献的bib文件(get_ref的子函数)
-    # ref_name:文献名称, filepath:保存路径
-    def get_bib(self, ref_name, filepath):
-        # 由于ref_ame中包含了作者，出版刊物等无用信息，需要进行简化再搜索
-        paper_name = simplify_name(ref_name)
-        # 说明该文献为网址等形式,无法搜索,跳过
-        if paper_name is None:
-            print("None", ref_name)
-            return "None"
-        res = self.search_paper(paper_name)
-        # aminer无收录该文章
-        # ---后续需要对这部分进行改进(添加搜索源)---
-        if res == []:
-            print("NotFound:", paper_name)
-            return "NotFound"
-
-        paper_id = res[0]['paper_url'].split("/")[-1]   
-        post_data = [{"action":"topic.GetTopicCited", "parameters":{"ids":[paper_id]}}]
+    # ref_name:文献名称,ref_id:文献id, filepath:保存路径
+    def get_bib(self, ref_name,ref_id, filepath): 
+        post_data = [{"action":"topic.GetTopicCited", "parameters":{"ids":[ref_id]}}]
         req = requests.post(SpiderConfig.cite_url, data=json.dumps(post_data))
         req = json.loads(req.text)
         ref = req['data'][0]['data']['bib']
-        with open(filepath + "\\" + "{}.bib".format(paper_name),"w",encoding='utf-8') as f:
-            f.write(ref)
-        return paper_name
+        # 去除ref_name 中的特殊字符
+        pat = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]") # 匹配不是中文、大小写、数字的其他字符
+        ref_name = pat.sub('', ref_name) #将string1中匹配到的字符替换成空字符
+        # 判断ref_name是否过长
+        try:
+            with open(filepath + "\\" + "{}.bib".format(ref_name),"w",encoding='utf-8') as f:
+                f.write(ref)
+        except:
+            ref_name = " ".join(ref_name.split(" ")[:5]) + "More"
+            with open(filepath + "\\" + "{}.bib".format(ref_name),"w",encoding='utf-8') as f:
+                f.write(ref)
+        return None

@@ -29,4 +29,6 @@ class SpiderConfig(object):
     hottopic_postdata = [{"action":"domains.GetTopicOfDomain","parameters":{"topicSize":20,"topSize":50,"sids":[143]}}]
     # 获取bib信息api
     cite_url = "https://apiv2.aminer.cn/magic?a=getTopicCited__topic.GetTopicCited___"
+    # 获取reference信息api
+    ref_url = "https://api.aminer.cn/api/pub/ref/{}/offset/0/size/30"
                 
