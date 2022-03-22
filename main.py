@@ -2,10 +2,11 @@ import sys
 from PySide6 import QtWidgets
 from PySide6.QtWidgets import *
 from PySide6.QtGui import * 
+from PySide6 import QtCore,QtGui
 from spider import Spider
 from my_windows.main_window import Ui_MainWindow
 import qdarkstyle    
-from utils import split_list
+from utils import split_list,simplify
 from selenium import webdriver
 
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -23,7 +24,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
         """跳转菜单"""
         self.pushButton_6.clicked.connect(self.to_page1)
-        self.pushButton_5.clicked.connect(self.to_page2)
         self.pushButton_4.clicked.connect(self.to_page3)
 
         """文献检索下载功能对应函数"""
@@ -39,6 +39,31 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         """参考文献检索功能对应函数"""
         # 绑定参考文献检索函数
         self.pushButton_7.clicked.connect(self.search_bib)
+
+        """美化界面"""
+        self.setWindowOpacity(0.9) # 设置窗口透明度
+        self.setWindowFlag(QtCore.Qt.FramelessWindowHint) # 隐藏边框
+        self.pushButton_4.setStyleSheet('''QPushButton{background:#F76677;border-radius:15px;}
+        QPushButton:hover{background:red;}''')
+        self.pushButton_6.setStyleSheet('''QPushButton{background:#F76677;border-radius:15px;}
+        QPushButton:hover{background:red;}''') 
+        #self.pushButton_14.clicked.connect(MainWindow.exit)
+
+    ''' def mousePressEvent(self, event):
+        if event.button()==QtCore.Qt.LeftButton:
+            self.m_flag=True
+            self.m_Position=event.globalPos()-self.pos() #获取鼠标相对窗口的位置
+            event.accept()
+            self.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))  #更改鼠标图标
+
+    def mouseMoveEvent(self, QMouseEvent):
+        if QtCore.Qt.LeftButton and self.m_flag:
+            self.move(QMouseEvent.globalPos()-self.m_Position)#更改窗口位置
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.m_flag=False
+        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) '''
 
 
     def to_page1(self):
@@ -128,6 +153,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     # 参考文献检索并下载bib
     def search_bib(self):
         search_name = self.lineEdit_2.text()
+        # 对search_name 进行简化
+        #search_name = simplify(search_name)
         ref_names = self.spider.get_ref(search_name)
         # 设置展示表格
         self.tableWidget.setRowCount(len(ref_names))

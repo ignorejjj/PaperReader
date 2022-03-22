@@ -31,23 +31,43 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="text">
-        <string>参考文献bib</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="pushButton_6">
+       <property name="styleSheet">
+        <string notr="true">QPushButton:hover
+{
+    background-color:rgb(255, 255, 127);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(255, 255, 127);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+       </property>
        <property name="text">
         <string>文献检索</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="styleSheet">
+        <string notr="true">QPushButton:hover
+{
+    background-color:rgb(255, 255, 127);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(255, 255, 127);
+    padding-left:3px;
+    padding-top:3px;
+}
+</string>
+       </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>参考文献下载</string>
        </property>
       </widget>
      </item>
@@ -67,20 +87,20 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>100</y>
-      <width>551</width>
-      <height>611</height>
+      <y>50</y>
+      <width>581</width>
+      <height>661</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="stackedWidgetPage1">
      <widget class="QGroupBox" name="groupBox_1">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>130</y>
         <width>541</width>
         <height>111</height>
        </rect>
@@ -90,17 +110,20 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>391</width>
+         <width>531</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
         <string>Genetic Algorithms and Machine Learning</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
       <widget class="QLabel" name="author1">
@@ -108,7 +131,7 @@
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>281</width>
+         <width>501</width>
          <height>16</height>
         </rect>
        </property>
@@ -213,8 +236,8 @@
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>180</y>
+        <x>10</x>
+        <y>250</y>
         <width>541</width>
         <height>111</height>
        </rect>
@@ -224,17 +247,20 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>391</width>
+         <width>531</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
         <string>Genetic Algorithms and Machine Learning</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
       <widget class="QLabel" name="author2">
@@ -242,7 +268,7 @@
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>281</width>
+         <width>521</width>
          <height>16</height>
         </rect>
        </property>
@@ -347,8 +373,8 @@
      <widget class="QGroupBox" name="groupBox_3">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>320</y>
+        <x>10</x>
+        <y>370</y>
         <width>541</width>
         <height>111</height>
        </rect>
@@ -358,17 +384,20 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>391</width>
+         <width>531</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
         <string>Genetic Algorithms and Machine Learning</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
       <widget class="QLabel" name="author3">
@@ -376,7 +405,7 @@
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>281</width>
+         <width>521</width>
          <height>16</height>
         </rect>
        </property>
@@ -481,8 +510,8 @@
      <widget class="QGroupBox" name="groupBox_4">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>440</y>
+        <x>10</x>
+        <y>490</y>
         <width>541</width>
         <height>111</height>
        </rect>
@@ -492,17 +521,20 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>391</width>
+         <width>531</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
         <string>Genetic Algorithms and Machine Learning</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
       <widget class="QLabel" name="author4">
@@ -510,7 +542,7 @@
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>281</width>
+         <width>521</width>
          <height>16</height>
         </rect>
        </property>
@@ -615,8 +647,8 @@
      <widget class="QPushButton" name="pushButton_3">
       <property name="geometry">
        <rect>
-        <x>420</x>
-        <y>570</y>
+        <x>450</x>
+        <y>610</y>
         <width>41</width>
         <height>24</height>
        </rect>
@@ -633,8 +665,8 @@
      <widget class="QPushButton" name="pushButton_2">
       <property name="geometry">
        <rect>
-        <x>470</x>
-        <y>570</y>
+        <x>500</x>
+        <y>610</y>
         <width>41</width>
         <height>24</height>
        </rect>
@@ -651,8 +683,8 @@
      <widget class="QLineEdit" name="lineEdit">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>10</y>
+        <x>30</x>
+        <y>60</y>
         <width>411</width>
         <height>41</height>
        </rect>
@@ -662,7 +694,7 @@
       <property name="geometry">
        <rect>
         <x>470</x>
-        <y>10</y>
+        <y>60</y>
         <width>61</width>
         <height>41</height>
        </rect>
@@ -677,10 +709,10 @@
      <widget class="QPushButton" name="pushButton_7">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>40</y>
-        <width>75</width>
-        <height>31</height>
+        <x>470</x>
+        <y>60</y>
+        <width>61</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -690,20 +722,20 @@
      <widget class="QLineEdit" name="lineEdit_2">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>40</y>
-        <width>221</width>
-        <height>31</height>
+        <x>30</x>
+        <y>60</y>
+        <width>411</width>
+        <height>41</height>
        </rect>
       </property>
      </widget>
      <widget class="QTableWidget" name="tableWidget">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>110</y>
-        <width>381</width>
-        <height>351</height>
+        <x>10</x>
+        <y>130</y>
+        <width>541</width>
+        <height>461</height>
        </rect>
       </property>
       <attribute name="horizontalHeaderStretchLastSection">
@@ -716,6 +748,38 @@
       </column>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>30</y>
+      <width>31</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+font-family:&quot;Webdings&quot;;
+background:#F76677;border-radius:5px;
+border:none;
+font-size:13px;
+}
+QPushButton:hover{background:red;}
+
+
+
+
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>1.png</normaloff>1.png</iconset>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -731,5 +795,22 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>755</x>
+     <y>83</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>382</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

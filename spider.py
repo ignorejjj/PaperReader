@@ -5,6 +5,8 @@ import os
 import re
 from config import SpiderConfig
 from utils import *
+from retrying import retry
+from freeproxy import freeproxy
 
 class Spider():
     def __init__(self):
@@ -142,13 +144,12 @@ class Spider():
         res = self.search_paper(paper_name)
         paper_id = res[0]['paper_id']
         name = res[0]['title']
-        print(paper_id)
         # 访问paper_url,获取该文献的所有参考文献
         req = requests.get(SpiderConfig.ref_url.format(paper_id), headers = SpiderConfig.normal_headers)
         data = json.loads(req.text)
         ref_infor = [(item['id'],item['title']) for item in data['data']]
 
-        filepath = ".\Reference--{}".format(name)
+        filepath = ".\Reference--{}".format(simplify(name))
         if not os.path.exists(filepath):
             os.makedirs(filepath)
 
@@ -164,14 +165,21 @@ class Spider():
 
     # 获取某个文献的bib文件(get_ref的子函数)
     # ref_name:文献名称,ref_id:文献id, filepath:保存路径
+    @retry(stop_max_attempt_number=2, wait_fixed=2000)
     def get_bib(self, ref_name,ref_id, filepath): 
         post_data = [{"action":"topic.GetTopicCited", "parameters":{"ids":[ref_id]}}]
-        req = requests.post(SpiderConfig.cite_url, data=json.dumps(post_data))
+        
+
+        proxy_sources = ['proxylistplus', 'kuaidaili']
+        fp_client = freeproxy.FreeProxy(proxy_sources=proxy_sources)
+        req = fp_client.post(SpiderConfig.cite_url, data=json.dumps(post_data))
+
+        #req = requests.post(SpiderConfig.cite_url, data=json.dumps(post_data), timeout = 1.5)
         req = json.loads(req.text)
         ref = req['data'][0]['data']['bib']
         # 去除ref_name 中的特殊字符
         pat = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]") # 匹配不是中文、大小写、数字的其他字符
-        ref_name = pat.sub('', ref_name) #将string1中匹配到的字符替换成空字符
+        ''' ref_name = pat.sub('', ref_name) #将string1中匹配到的字符替换成空字符
         # 判断ref_name是否过长
         try:
             with open(filepath + "\\" + "{}.bib".format(ref_name),"w",encoding='utf-8') as f:
@@ -179,5 +187,8 @@ class Spider():
         except:
             ref_name = " ".join(ref_name.split(" ")[:5]) + "More"
             with open(filepath + "\\" + "{}.bib".format(ref_name),"w",encoding='utf-8') as f:
-                f.write(ref)
+                f.write(ref) '''
+        ref_name = simplify(ref_name)
+        with open(filepath + "\\" + "{}.bib".format(ref_name),"w",encoding='utf-8') as f:
+            f.write(ref)
         return None
