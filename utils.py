@@ -8,5 +8,7 @@ def split_list(l,n = 4):
 
 # 对过长的文本进行简化，去除其中的符号以及两端的空格
 def simplify(name):
-    name = name.replace("."," ").replace(":"," ").replace("?"," ").strip()
+    name = name.replace("."," ").replace(":"," ").replace("?"," ").replace(","," ").strip()
+    if len(name) > 100:
+        return name[:100]
     return name

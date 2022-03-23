@@ -71,16 +71,6 @@ QPushButton:pressed
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QStackedWidget" name="stackedWidget">
@@ -93,7 +83,7 @@ QPushButton:pressed
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="stackedWidgetPage1">
      <widget class="QGroupBox" name="groupBox_1">
@@ -205,19 +195,6 @@ QPushButton:pressed
          <string>Machine Learning,(1988)</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QPushButton" name="downloadButton1">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>80</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>下载全文</string>
-       </property>
       </widget>
       <widget class="QPushButton" name="paperButton1">
        <property name="geometry">
@@ -343,19 +320,6 @@ QPushButton:pressed
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="downloadButton2">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>80</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>下载全文</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="paperButton2">
        <property name="geometry">
         <rect>
@@ -479,19 +443,6 @@ QPushButton:pressed
          <string>Machine Learning,(1988)</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QPushButton" name="downloadButton3">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>80</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>下载全文</string>
-       </property>
       </widget>
       <widget class="QPushButton" name="paperButton3">
        <property name="geometry">
@@ -617,19 +568,6 @@ QPushButton:pressed
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="downloadButton4">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>80</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>下载全文</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="paperButton4">
        <property name="geometry">
         <rect>
@@ -747,6 +685,19 @@ QPushButton:pressed
        </property>
       </column>
      </widget>
+     <widget class="QPushButton" name="pushButton_8">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>60</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>文件</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_5">
@@ -778,7 +729,7 @@ QPushButton:hover{background:red;}
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>1.png</normaloff>1.png</iconset>
+      <normaloff>pic/icon.png</normaloff>pic/icon.png</iconset>
     </property>
    </widget>
   </widget>

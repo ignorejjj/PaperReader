@@ -8,11 +8,13 @@ from my_windows.main_window import Ui_MainWindow
 import qdarkstyle    
 from utils import split_list,simplify
 from selenium import webdriver
+import pdfplumber
 
 class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.setupUi(self)
+        self.m_flag = False
 
         """"初始化各个标签"""
         for i in range(4):
@@ -29,9 +31,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         """文献检索下载功能对应函数"""
         self.pushButton.clicked.connect(self.search_paper)
         # 绑定下载按钮对应函数,i代表第i个按钮
-        for i in range(1,5):
-            self.__dict__['downloadButton{}'.format(i)].clicked.connect(lambda: self.to_downurl(i))   
-            self.__dict__['paperButton{}'.format(i)].clicked.connect(lambda: self.to_paperurl(i))
+        self.paperButton1.clicked.connect(lambda: self.to_paperurl(1))
+        self.paperButton2.clicked.connect(lambda: self.to_paperurl(2))
+        self.paperButton3.clicked.connect(lambda: self.to_paperurl(3))
+        self.paperButton4.clicked.connect(lambda: self.to_paperurl(4))
         # 跳转搜索页面
         self.pushButton_2.clicked.connect(self.to_nextpage)
         self.pushButton_3.clicked.connect(self.to_lastpage)
@@ -39,6 +42,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         """参考文献检索功能对应函数"""
         # 绑定参考文献检索函数
         self.pushButton_7.clicked.connect(self.search_bib)
+        self.pushButton_8.clicked.connect(self.get_file_title)
 
         """美化界面"""
         self.setWindowOpacity(0.9) # 设置窗口透明度
@@ -49,7 +53,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         QPushButton:hover{background:red;}''') 
         #self.pushButton_14.clicked.connect(MainWindow.exit)
 
-    ''' def mousePressEvent(self, event):
+
+    def mousePressEvent(self, event):
         if event.button()==QtCore.Qt.LeftButton:
             self.m_flag=True
             self.m_Position=event.globalPos()-self.pos() #获取鼠标相对窗口的位置
@@ -63,7 +68,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_flag=False
-        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) '''
+        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) 
 
 
     def to_page1(self):
@@ -106,6 +111,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     # n为点击的按钮序号
     def to_downurl(self, n):
         data = self.pagedata[self.currentPage][n-1]
+        print(data)
         url = data['pdf_url']
         # 检验地址是否有效
         if url[:4] != "http":
@@ -162,8 +168,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             new = QTableWidgetItem(name)
             self.tableWidget.setItem(i,0,new)
 
-        
-
+    # 从pdf文件中获取论文标题,并填入输入框中
+    def get_file_title(self):
+        pdfPath, filetype = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", "./", "*.*")
+        with pdfplumber.open(pdfPath) as pdf:
+            page01 = pdf.pages[0] #指定页码
+            text = page01.extract_text()#提取文本
+            title = text.split("\n")[0]
+        self.lineEdit_2.setText(title)
 
 
 if __name__ == "__main__":

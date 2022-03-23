@@ -142,7 +142,10 @@ class Spider():
 
         # 获取给定文献的主页url
         res = self.search_paper(paper_name)
-        paper_id = res[0]['paper_id']
+        try:
+            paper_id = res[0]['paper_id']
+        except:
+            print("未搜到对应文章")
         name = res[0]['title']
         # 访问paper_url,获取该文献的所有参考文献
         req = requests.get(SpiderConfig.ref_url.format(paper_id), headers = SpiderConfig.normal_headers)
@@ -154,8 +157,9 @@ class Spider():
             os.makedirs(filepath)
 
         # 对每个参考文献,保存该文献的bib
+        print("-------开始下载参考文献bib文件-------")
         for (ref_id, ref_name) in ref_infor:
-            print(ref_name)
+            print("正在下载bib : "+ref_name)
             self.get_bib(ref_name,ref_id, filepath)
         
         # 返回所有参考文献名称
